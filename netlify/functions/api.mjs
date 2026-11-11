@@ -11,23 +11,19 @@ class RequestError extends Error {
 }
 
 function response(statusCode, body) {
-    return {
-        statusCode,
+    return new Response(JSON.stringify(body), {
+        status: statusCode,
         headers: {
             "Content-Type": "application/json; charset=utf-8",
             "Cache-Control": "no-store",
             "X-Content-Type-Options": "nosniff",
         },
-        body: JSON.stringify(body),
-    };
+    });
 }
 
-function parseBody(event) {
-    if (!event.body) return {};
+async function parseBody(request) {
     try {
-        return JSON.parse(event.isBase64Encoded
-            ? Buffer.from(event.body, "base64").toString("utf8")
-            : event.body);
+        return await request.json();
     } catch {
         throw new RequestError("Isi permintaan bukan JSON yang valid.");
     }
@@ -119,17 +115,17 @@ async function listMatches() {
         );
 }
 
-export const handler = async (event) => {
+export default async function handler(request) {
     try {
-        if (event.httpMethod === "GET") {
+        if (request.method === "GET") {
             return response(200, {
                 settings: { default_set_count: 3, default_arrows_per_set: 3 },
                 matches: await listMatches(),
             });
         };
 
-        if (event.httpMethod === "POST") {
-            const input = parseBody(event);
+        if (request.method === "POST") {
+            const input = await parseBody(request);
             const validated = validateMatch(input);
             const match = {
                 id: crypto.randomUUID(),
@@ -140,8 +136,8 @@ export const handler = async (event) => {
             return response(201, { match });
         }
 
-        if (event.httpMethod === "DELETE") {
-            const input = parseBody(event);
+        if (request.method === "DELETE") {
+            const input = await parseBody(request);
             if (typeof input.id !== "string" || !/^[\da-f-]{36}$/i.test(input.id)) {
                 throw new RequestError("ID pertandingan tidak valid.");
             }
