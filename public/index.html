@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="id">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#e7efe6">
+    <title>Skor pertandingan · Busur</title>
+    <link rel="stylesheet" href="/styles.css">
+    <script defer src="/netlify-app.js"></script>
+</head>
+<body>
+<header>
+    <div class="shell topbar">
+        <a class="brand" href="?page=scores">
+            <span class="brand-mark" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M5 3c8 4 8 14 0 18M5 12h13m0 0-4-4m4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <span><span class="brand-name">busur<span class="brand-period">.</span></span><br><span class="brand-note">ARCHERY SCOREKEEPER</span></span>
+        </a>
+        <nav class="nav" aria-label="Navigasi utama">
+            <a href="?page=scores" data-page-link="scores">Skor</a>
+            <a href="?page=history" data-page-link="history">Riwayat</a>
+            <a href="?page=ranking" data-page-link="ranking">Peringkat</a>
+            <a href="?page=entry" data-page-link="entry">Input skor</a>
+        </nav>
+    </div>
+</header>
+<main class="shell" id="app" aria-live="polite">
+    <section class="card empty"><h2>Memuat Busur…</h2></section>
+</main>
+<footer class="shell">Busur · Archery Scorekeeper</footer>
+</body>
+</html>
